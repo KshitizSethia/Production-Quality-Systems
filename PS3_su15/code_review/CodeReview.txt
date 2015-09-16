@@ -1,0 +1,30 @@
+Stopwatch.java
+	13		final class
+	13		Stopwatch class can be private, no need to expose as we have Factory
+				both above reasons and line 38 in StopwatchFactory.java introduces vulnerability:
+				what if a subclass of Stopwatch is created? now its constructor will be called with cacheLock acquired
+	17		is currentOp being used across methods? if not then no point using it
+	25		enums are inherently static, whats the need for this keyword?
+	79		a private variable which might be useful in future?
+				explain why it will be useful
+				or remove it
+			wrong message, the variable is being used
+	83		IllegalArgumentException instead?
+	103		this. is implicit
+	109		do we need to remove this?
+	111		when start() on watch that has been reset -> startTime is from when it was reset()
+	125		error message not very helpful for API user
+				same error on 138, 150
+	128		getTime can be moved outside synchronized block?
+	168		reset can be performed when stopwatch is running
+	186		equals, hashCode and toString are not overridden
+
+StopwatchFactory.java
+	16		final class
+	16		private contructor, prevent instantiation
+	18 		cacheLock not needed, cache private variable can be used
+	45-50	state that changes to the returned list will not be seen by Factory
+	53		what's the utility of CopyOnWriteArrayList here? simple copied ArrayList would do.
+				a CopyOnWriteArrayList could be used by cache variable
+	
+	

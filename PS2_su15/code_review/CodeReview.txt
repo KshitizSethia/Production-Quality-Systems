@@ -1,0 +1,59 @@
+Please enter your code review in this file as plain text
+and make sure to include it when you commit your project.
+
+General Comments:
+	No test cases/testing code which can be used to verify functionality
+	explain reason for including serialVersionUID, or give link: http://stackoverflow.com/a/285809/681311
+	
+AddressBook.java:
+	12-24:		Duplicate info here
+	12-24: 		very dense, split text into paragraphs
+	25:			Implement IAddressBook, which freezes interface, but leaves room for other types of IAddressBooks (example: one on the cloud)
+	25:			implementing Serializable without XML/text is a bad practice, must be avoided
+	26:			use List<Entry>
+	27:			short reason for including serialVersionUID, give link: http://stackoverflow.com/a/285809/681311
+	41:			no update to caller of add() if the addition of a contact fails (return variable, exception)
+	42:			implementation prevents contact from being updated in the address book once it is in it. Seems like essential functionality for an address book
+	54:			does removal actually work? test code for the same?
+	58:			this functionality not stated above in class Javadoc
+	61:			(typo) "True" -> "true"
+	75-159:		(suggestion) Multiple methods => API is big, user needs to know what field to search
+	75-159:		return List<Entry>: more useable as Iterator, and prevents the internal conversion from List to array
+	81:			searching by part of name (example: first name) doesn't work. Similarly in address, phone number, etc.
+	75-159:		lots of copy pasting of code, can we figure out a generic way of doing this? like: public Entry[] search<T>(T obj)
+	160-171:	Some details expose implementation details which might change. These should not be publicly committed to.
+	184-192:	Reason for exception should be part of @throws portion in Javadoc
+	184-223:	static methods have been mixed in object methods. There should be a seperate class which can load/save/create AddressBook
+	198-199:	variable names fos and oos
+	206-213:	possible explanation for exceptions
+	208:		mention that absolute path is required, or handle internally
+	214:		change input arg to filePath, as it takes absolute path instead of just the file name
+	216-218:	variable names
+	226:		Is there a need for AddressBook.toString()?
+	230:		What if any string fields in Entry have a \n, this introduces chances of error in parsing AddressBook.toString with code.
+				Boundries should be clearly defined, or string encoding should be used.
+
+EmailAddress.java:
+	14:			(suggestion) there seems no need for such thorough inspection of the EmailAddress, if it's wrong the user will change it.
+	5-20:		Committing regex will prevent us from changing it later. Implementation details should not be part of Javadoc, only usage details
+	42:			Where was this regex taken from? Some RFC/link which verifies its validity
+	57:			("EmailAddress invalid " +emailAddress) should be sufficient
+	
+Entry.java:
+	11-20:		more appropriate if part of Builder's Javadoc
+	25:			(suggestion) name as "Contact" instead?
+	60-64:		use {@link} annotations:
+					makes links in Javadoc
+					automatic refactoring in Eclipse changes class name references in Javadoc properly
+	189:		better formatting needed
+	
+PhoneNumber.java:
+	5-20:		Use String instead, int is inconvenient when leading zeros are there and always need to be converted back to strings
+	5-20:		what about phone numbers with country codes, extensions, ussd codes (*123#)
+	
+PostalAddress.java:
+	30:			Not every address would need all the fields. use Builder pattern or simple String instead?
+	30:			(hypothetical) If in future, zip codes start including alphabets, then a change in API will break old client code. 
+				Such a small detail doesn't warrant changes on client side
+	34:			addresses outside USA have 6 digit zip codes
+	103:		(suggestion)comma sepration between fields of address?
